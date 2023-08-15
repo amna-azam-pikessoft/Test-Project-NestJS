@@ -6,6 +6,8 @@ import { User } from './user.entity';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { CurrentUserInterceptor } from 'src/interceptors/current-user.interceptor';
 
 @Module({
   imports:[
@@ -17,7 +19,13 @@ import { ConfigModule } from '@nestjs/config';
       signOptions: { expiresIn: '150s' },
     }),
 ],
-  providers: [UserService, AuthService ],
+  providers: [UserService,
+    AuthService,
+    {
+      provide:APP_INTERCEPTOR,
+      useClass:CurrentUserInterceptor
+    }
+  ],
   controllers: [UserController]
 })
 export class UserModule {}

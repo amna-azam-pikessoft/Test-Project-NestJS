@@ -34,4 +34,11 @@ export class UserService {
             throw new NotFoundException('User not Found with this email : ' + email)
         return user;
     }
+
+    async retrieveByID(id:number){
+        const user = await this.repo.findOneBy({id});
+        if(!user)
+            throw new NotFoundException('User not Found with this id : ' + id)
+        return user;
+    }
 }
