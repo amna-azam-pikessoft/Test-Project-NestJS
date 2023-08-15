@@ -1,13 +1,16 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDTO } from 'src/dtos/create-user.dto';
-import { updateUserDTO } from 'src/dtos/update-user.dto';
+import { CreateUserDTO } from 'src/user/dtos/create-user.dto';
+import { updateUserDTO } from 'src/user/dtos/update-user.dto';
 import { serializeInterceptor } from 'src/interceptors/serialize.interceptor';
-import { UserDTO } from 'src/dtos/user.dto';
+import { UserDTO } from 'src/user/dtos/user.dto';
 import { AuthService } from './auth.service';
-import { SignInUserDTO } from 'src/dtos/signin-user.dto';
+import { SignInUserDTO } from 'src/user/dtos/signin-user.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { User } from './user.entity';
 
+@UseInterceptors(new serializeInterceptor(UserDTO))
 @Controller('user')
 export class UserController {
     
@@ -20,8 +23,7 @@ export class UserController {
         return this.authService.signup(name,email,password);
     }
 
-    @UseInterceptors(new serializeInterceptor(UserDTO))
-    @Get('/signin')
+    @Post('/signin')
     retrieveUser(@Body() body:SignInUserDTO){
         const {email,password} = body;
         return this.authService.signin(email,password);
@@ -29,8 +31,8 @@ export class UserController {
 
     @UseGuards(AuthGuard)
     @Get('/profile')
-    getProfile(@Request() req) {
-        return req.user;
+    getProfile(@CurrentUser() currentUser:User) {
+        return currentUser;
     }
 
     @Delete('/:id')
