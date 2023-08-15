@@ -17,6 +17,7 @@ export class UserController {
     @Post('/signup')
     createUser(@Body() body:CreateUserDTO){
         const {name, email, password} = body;
+        console.log(body)
         return this.authService.signup(name,email,password);
     }
 
