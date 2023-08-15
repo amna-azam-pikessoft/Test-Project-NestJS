@@ -1,3 +1,4 @@
+import { Likes } from "src/likes/likes.entity";
 import { Posts } from "src/posts/posts.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -26,4 +27,10 @@ export class User{
 
     @OneToMany(() => Posts, (post) => post.user)
     posts:Posts[]
+
+    //User has done many likes.
+    //Many likes has one user.
+
+    @OneToMany(() => Likes, (like) => like.user)
+    likes:Likes[]
 }

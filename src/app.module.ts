@@ -7,12 +7,15 @@ import { User } from './user/user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { Posts } from './posts/posts.entity';
 import { PostsModule } from './posts/posts.module';
+import { Likes } from './likes/likes.entity';
+import { LikesModule } from './likes/likes.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal: true}),
     UserModule,
     PostsModule,
+    LikesModule,
     TypeOrmModule.forRoot({
       type:'postgres',
       host:process.env.POSTGRES_HOST,
@@ -21,7 +24,7 @@ import { PostsModule } from './posts/posts.module';
       password:process.env.POSTGRES_PASSWORD,
       database:process.env.POSTGRES_DATABASE,
       synchronize:true,
-      entities:[User, Posts]
+      entities:[User, Posts, Likes]
     })
   ],
   controllers: [AppController],
