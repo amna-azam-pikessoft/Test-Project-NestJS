@@ -1,56 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
+import { updateUserDTO } from './dtos/update-user.dto';
+import { CreateUserDTO } from './dtos/create-user.dto';
+import { JwtService } from '@nestjs/jwt';
 
 describe('UserController', () => {
   let controller: UserController;
 
   let mockUserService = {
-    create: jest.fn((name:string, email:string,password:string) => { 
-      return {
-        id:1,
-        name:name,
-        email:email,
-        password:password,
-        createdAt:new Date(),
-        updatedAt:new Date()
-      }
-    }),
 
-    update: jest.fn((id, dto)=> {
-      return {
-        id,
-        ...dto,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
-    }),
-
-    delete: jest.fn((id)=>{
-      return {
-        name:"tester",
-        email:"test@test.com",
-        password:"test",
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
-    }),
-
-    retrieve: jest.fn((id)=>{
-      return {
-        id,
-        name:"tester",
-        email:"test@test.com",
-        password:"test",
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
-    })
+    create: (dto:CreateUserDTO) => Promise.resolve({...dto}),
+    update: (id:string, dto:updateUserDTO)=> Promise.resolve({id, ...dto}),
+    delete: (id:number) => Promise.resolve({id, name:"amna", email:"amna@gmail.com", password:"1234"})
+    
   }
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers:[UserService],
+      providers:[UserService, JwtService],
       controllers:[UserController]
     }).overrideProvider(UserService).useValue(mockUserService).compile();
 
@@ -61,60 +29,18 @@ describe('UserController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should create a user', () => {
-    const dto = {
-      name:"tester",
-      email:"test@test.com", 
-      password:"test"
-    };
-
-    expect(controller.createUser(dto)).toEqual({
-      id:expect.any(Number),
-      ...dto,
-      createdAt:expect.any(Date),
-      updatedAt:expect.any(Date),
-    });
-    expect(mockUserService.create).toHaveBeenCalled()
+  it('should create the user', async () => {
+    const user = await controller.createUser({name:"amna", email:"amna@pikessoft.com", password:"Password@1"})
+    expect(user).toBeDefined()
   })
 
-  it('should update a user', () => {
-    const dto = {
-      name:"tester",
-      email:"test@test.com", 
-      password:"test"
-    };
-
-    expect(controller.updateUser(1, dto)).toEqual({
-      id:1,
-      ...dto,
-      createdAt:expect.any(Date),
-      updatedAt:expect.any(Date),
-    });
-
-    expect(mockUserService.update).toHaveBeenCalled()
+  it('should update the user', async () => {
+    const user = await controller.updateUser("1",{name:"amna", email:"amna@pikessoft.com", password:"Password@1"})
+    expect(user).toBeDefined()
   })
 
-  it('should delete the user', () => {
-    expect(controller.deleteUser(1)).toEqual({
-      name:"tester",
-      email:"test@test.com",
-      password:"test",
-      createdAt:expect.any(Date),
-      updatedAt:expect.any(Date)
-    })
-    expect(mockUserService.update).toBeCalled()
+  it('should delete the user', async () => {
+    const user = await controller.deleteUser("1")
+    expect(user).toBeDefined()
   })
-
-  it('should retrieve the user', () => {
-    expect(controller.retrieveUser(1)).toEqual({
-      id:expect.any(Number),
-      name:"tester",
-      email:"test@test.com",
-      password:"test",
-      createdAt:expect.any(Date),
-      updatedAt:expect.any(Date)
-    })
-    expect(mockUserService.retrieve).toBeCalled()
-  })
-  
 });

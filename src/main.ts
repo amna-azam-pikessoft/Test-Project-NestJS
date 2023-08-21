@@ -10,10 +10,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe ());
 
   const config = new DocumentBuilder()
-  .setTitle('CRUD examples')
-  .setDescription('CRUD APIs decription')
+  .addBearerAuth({ in: "header", type: "http" })
   .setVersion('1.0')
-  .addTag('users')
   .build();
 
   const document = SwaggerModule.createDocument(app, config);
