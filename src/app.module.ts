@@ -5,7 +5,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { ConfigModule } from '@nestjs/config';
-import { Posts } from './posts/posts.entity';
+import { Posts } from './posts/entities/posts.entity';
 import { PostsModule } from './posts/posts.module';
 
 @Module({

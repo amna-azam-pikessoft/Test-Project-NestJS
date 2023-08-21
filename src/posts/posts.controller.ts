@@ -2,10 +2,10 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UseInterc
 import { PostsService } from './posts.service';
 import { createPostDTO } from './dtos/create-post.dto';
 import { updatePostDTO } from './dtos/update-post.dto';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
-import { User } from 'src/user/user.entity';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { serializeInterceptor } from 'src/interceptors/serialize.interceptor';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import { User } from '../user/user.entity';
+import { AuthGuard } from '../guards/auth.guard';
+import { serializeInterceptor } from '../interceptors/serialize.interceptor';
 import { postDTO } from './dtos/post.dto';
 
 @UseInterceptors(new serializeInterceptor(postDTO))
@@ -16,8 +16,7 @@ export class PostsController {
     @UseGuards(AuthGuard)
     @Post('/create')
     createPost(@Body() body:createPostDTO, @CurrentUser() user:User){
-        const {description, title} = body;
-        return this.postsService.create(description, title, user);
+        return this.postsService.create(body, user);
     }
 
     @Get('/:postID')
