@@ -7,7 +7,7 @@ import { User } from './user/user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { Posts } from './posts/posts.entity';
 import { PostsModule } from './posts/posts.module';
-import { Likes } from './likes/likes.entity';
+import { Likes } from './likes/entities/likes.entity';
 import { LikesModule } from './likes/likes.module';
 
 @Module({

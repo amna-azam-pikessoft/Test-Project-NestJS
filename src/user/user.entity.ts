@@ -1,5 +1,5 @@
-import { Likes } from "src/likes/likes.entity";
-import { Posts } from "src/posts/posts.entity";
+import { Likes } from "../likes/entities/likes.entity"
+import { Posts } from "../posts/posts.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()

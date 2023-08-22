@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Likes } from './likes.entity';
+import { Likes } from './entities/likes.entity';
 import { Repository } from 'typeorm';
-import { User } from 'src/user/user.entity';
-import { PostsService } from 'src/posts/posts.service';
+import { User } from '../user/user.entity';
+import { PostsService } from '../posts/posts.service';
 
 @Injectable()
 export class LikesService {
@@ -18,7 +18,6 @@ export class LikesService {
                 post: { id: postID },
             },
         });
-      
         if (existingLike) {
         throw new NotFoundException('User has already liked this post');
         }
@@ -35,7 +34,6 @@ export class LikesService {
                 post: { id: postID },
             },
         });
-      
         if (!existingLike) 
             throw new NotFoundException('User does not have like for this post.');
 

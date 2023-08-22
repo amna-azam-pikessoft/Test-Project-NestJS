@@ -1,7 +1,7 @@
 import { Controller, Delete, Param, Post } from '@nestjs/common';
 import { LikesService } from './likes.service';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
-import { User } from 'src/user/user.entity';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import { User } from '../user/user.entity';
 
 @Controller('likes')
 export class LikesController {

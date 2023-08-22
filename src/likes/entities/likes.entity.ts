@@ -1,5 +1,5 @@
-import { Posts } from "src/posts/posts.entity";
-import { User } from "src/user/user.entity";
+import { Posts } from "../../posts/posts.entity";
+import { User } from "../../user/user.entity";
 import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
